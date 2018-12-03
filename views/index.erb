@@ -1,0 +1,49 @@
+<html>
+  <head>
+    <title>顧客情報ページ</title>
+  </head>
+  <body>
+    <h1>顧客情報ページ</h1>
+    <div>
+      <table>
+        <tr><th>名前</th><th>商品情報</th><th>状態</th><th>コメント</th><th>レポート作成日</th></tr>
+        <% @customers.each do |customer| %>
+          <tr>
+            <td><%= customer.name %></td>
+            <td><%= customer.description %></td>
+            <% if customer.status == "bought" %>
+              <td>購入</td>
+            <% elsif customer.status == "considered" %>
+              <td>保留</td>
+            <% elsif customer.status == "not_planed" %>
+              <td>購入予定無し</td>
+            <% end %>
+            <td><%= customer.comment %></td>
+            <td><%= customer.created_at.in_time_zone("Tokyo") %></td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+    <form action="/create_customer" method="POST">
+      <div>
+        名前:<input name="customer_name" type="text" value=""/>
+      </div>
+      <div>
+        PR情報:<textarea name="customer_description" rows="5"></textarea>
+      </div>
+      <div>
+        ステータス:<select name="customer_status">
+        <option value="bought">購入</option>
+        <option value="considered">保留</option>
+        <option value="non_planed">購入予定無し</option>
+        </select>
+      </div>
+      <div>
+        コメント:<textarea name="customer_comment" rows="5"></textarea>
+      </div>
+      <div>
+        <input type="submit" value="送信する">
+      </div>
+    </form>
+  </body>
+</html>
